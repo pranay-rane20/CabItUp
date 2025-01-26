@@ -1,13 +1,26 @@
+/**
+ * Server initialization file
+ * Creates and starts HTTP server, connects to database
+ */
+
+// Import required dependencies
 const http = require('http');
-const app = require('./app'); // Correctly reference the app.js file
+const app = require('./app');
+const db = require('./db/db');
+
+// Set port from environment variables or default to 3000
 const port = process.env.PORT || 3000;
-const db = require('./db/db')
+
+// Initialize database connection
 db();
 
-// Create HTTP server
+// Create HTTP server instance with Express app
 const server = http.createServer(app);
 
-// Start server
+/**
+ * Start server and listen on configured port
+ * Logs message when server successfully starts
+ */
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
