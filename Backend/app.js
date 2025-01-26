@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const userRoutes = require('./routes/user.routes');
+const cookieParser = require('cookie-parser');
 
 // Configure environment variables
 dotenv.config();
@@ -13,13 +14,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
 // Routes
-app.use('/user', userRoutes);
 app.use('/user', userRoutes);
 
 module.exports = app;
