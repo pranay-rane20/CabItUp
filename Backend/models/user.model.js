@@ -61,7 +61,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
     const user = this;
     return bcrypt.compare(candidatePassword, user.password);
 };
-
+ 
 // Hash password before saving
 userSchema.statics.hashPassword = async function(password) {
     return await bcrypt.hash(password, 10);
