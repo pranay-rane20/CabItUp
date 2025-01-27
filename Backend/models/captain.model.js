@@ -27,7 +27,7 @@ const captainSchema = new mongoose.Schema(
         password: {
             type: String,
             required: [true, 'Password is required'],
-            minlength: [4, 'Password must be at least 8 characters'], // Fixed minlength from 4 to 8
+            minlength: [8, 'Password must be at least 8 characters'],
             select: false
         },
         socketId: {

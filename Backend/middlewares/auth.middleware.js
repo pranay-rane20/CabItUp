@@ -9,7 +9,7 @@ const BlackListToken = require('../models/blackListToken.model');
  * Verifies JWT token from cookies or Authorization header
  * Attaches user object to request if authentication successful
  */
-module.exports.auth = async (req, res, next) => {
+module.exports.authUser = async (req, res, next) => {
     try {
         // Extract token from cookies or Authorization header
         // Authorization header format: "Bearer <token>"
@@ -46,3 +46,31 @@ module.exports.auth = async (req, res, next) => {
         return res.status(401).json({ message: 'Invalid token' });
     }
 }
+
+
+module.exports.authCaptain = async (req, res, next) => {
+    const token = req.cookies.token || req.headers.authorization.split(' ')[1];
+
+    if(!token){
+        return res.status(401).json({message: 'Unauthorized user'});
+    }
+
+    const isBlackListed = await BlackListToken.findOne({ token: token });
+    if(isBlackListed){
+        return res.status(401).json({message: 'Unauthorized user'});
+    }
+    try{
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const captain = await captain.findById(decoded._id);
+        if(!captain){
+            return res.status(401).json({message: 'Captain not found'});
+        }
+        req.captain = captain;
+        return next();
+    }catch(err){
+        console.error('Token verification error:', err.message);
+        return res.status(401).json({message: 'Invalid token'});
+    }
+
+}
+       

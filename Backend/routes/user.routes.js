@@ -62,7 +62,7 @@ router.post('/login',
  * Requires valid JWT token
  */
 router.get('/profile', 
-    authMiddleware.auth, 
+    authMiddleware.authUser, 
     userController.getUserProfile
 );
 
@@ -72,7 +72,7 @@ router.get('/profile',
  * Requires valid JWT token
  */
 router.get('/logout',
-    authMiddleware.auth,
+    authMiddleware.authUser,
     userController.logoutUser
 );
 
