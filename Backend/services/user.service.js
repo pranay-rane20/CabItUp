@@ -7,9 +7,9 @@ const userModel = require('../models/user.model');
 const bcrypt = require('bcrypt');
 
 //Register a new user in the system
-module.exports.registerUser = async (email, firstname, lastname, password) => {
+module.exports.createCaptain = async (email, firstname, lastname, password,color,plate,capacity,vehicleType) => {
     // Validate that all required fields are provided
-    if (!email || !firstname || !lastname || !password) {
+    if (!email || !firstname || !lastname || !password || !color || !plate || !capacity || !vehicleType) {
         throw new Error('All fields are required');
     }
  
@@ -20,10 +20,6 @@ module.exports.registerUser = async (email, firstname, lastname, password) => {
             throw new Error('User with this email already exists');
         }
 
-        // Hash password using the userModel static method
-        // This uses bcrypt under the hood with proper salt rounds
-        const hashedPassword = await userModel.hashPassword(password);
-
         // Create new user document in database
         const user = await userModel.create({
             email,
@@ -31,7 +27,13 @@ module.exports.registerUser = async (email, firstname, lastname, password) => {
                 firstname,
                 lastname,
             },
-            password: hashedPassword,
+            password,
+            vehicle: {
+                color,
+                plate,
+                capacity,
+                vehicleType
+            }
         });
 
         // Return the Mongoose document itself

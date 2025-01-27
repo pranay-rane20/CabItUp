@@ -14,8 +14,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
  * Register a new user account
  * Validates required fields and password strength
  */
-router.post(
-    '/register',
+router.post('/register',
     [
         // Validate email format
         body('email')
@@ -42,8 +41,7 @@ router.post(
  * POST /user/login 
  * Authenticate user credentials and login
  */
-router.post(
-    '/login',
+router.post('/login',
     [
         // Validate email format
         body('email')
@@ -63,13 +61,11 @@ router.post(
  * Get authenticated user's profile
  * Requires valid JWT token
  */
-router.get(
-    '/profile', 
+router.get('/profile', 
     authMiddleware.auth, 
     userController.getUserProfile
 );
 
-// GET /user/logout
 /**
  * GET /user/logout
  * Logout authenticated user and invalidate token

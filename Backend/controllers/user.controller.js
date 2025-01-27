@@ -1,4 +1,4 @@
-const userServices = require('../services/user.services');
+const userServices = require('../services/user.service');
 const { validationResult } = require('express-validator');
 const userModel = require('../models/user.model');
 const BlackListToken = require('../models/blackListToken.model');
@@ -19,6 +19,11 @@ module.exports.registerUser = async (req, res, next) => {
         fullname: { firstname, lastname }, 
         password 
     } = req.body;
+
+    const isUserAlreadyExist = await userModel.findOne({ email });
+    if(isUserAlreadyExist){
+        return res.status(400).json({message: 'User already exist with this email'});
+    }
 
     try {
         // Create new user using service
@@ -85,6 +90,7 @@ module.exports.loginUser = async (req, res, next) => {
     }
 };
 
+
 //Get user profile
 module.exports.getUserProfile = async (req, res, next) => {
     res.status(200).json({ 
@@ -92,6 +98,7 @@ module.exports.getUserProfile = async (req, res, next) => {
         user: req.user 
     });
 };
+
 
 //Get user logout
 module.exports.logoutUser = async (req, res, next) => {

@@ -9,6 +9,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const userRoutes = require('./routes/user.routes');
 const cookieParser = require('cookie-parser');
+const captainRoutes = require('./routes/captain.routes');
+
 
 // Load environment variables from .env file
 dotenv.config();
@@ -43,6 +45,9 @@ app.get('/', (req, res) => {
 
 // User routes
 app.use('/user', userRoutes);
+
+// Captain routes
+app.use('/captain', captainRoutes);
 
 // Export app for use in server
 module.exports = app;
