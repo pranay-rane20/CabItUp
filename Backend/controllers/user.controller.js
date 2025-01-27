@@ -1,6 +1,9 @@
 const userServices = require('../services/user.services');
 const { validationResult } = require('express-validator');
 const userModel = require('../models/user.model');
+const BlackListToken = require('../models/blackListToken.model');
+
+
 
  //Register a new user
 module.exports.registerUser = async (req, res, next) => {
@@ -88,4 +91,26 @@ module.exports.getUserProfile = async (req, res, next) => {
         message: 'Profile fetched successfully', 
         user: req.user 
     });
+};
+
+//Get user logout
+module.exports.logoutUser = async (req, res, next) => {
+    try {
+        // Clear the cookie first
+        res.clearCookie('token');
+
+        // Get token from cookie or authorization header
+        const token = req.cookies.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+
+        if (!token) {
+            return res.status(400).json({ message: 'No token found' });
+        }
+
+        // Blacklist the token
+        await BlackListToken.create({ token });
+
+        res.status(200).json({ message: 'Logged out successfully' });
+    } catch (error) {
+        next(error);
+    }
 };

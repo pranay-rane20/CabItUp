@@ -69,4 +69,15 @@ router.get(
     userController.getUserProfile
 );
 
+// GET /user/logout
+/**
+ * GET /user/logout
+ * Logout authenticated user and invalidate token
+ * Requires valid JWT token
+ */
+router.get('/logout',
+    authMiddleware.auth,
+    userController.logoutUser
+);
+
 module.exports = router;
