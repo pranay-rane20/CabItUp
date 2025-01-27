@@ -2,6 +2,7 @@ const userModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const BlackListToken = require('../models/blackListToken.model');
+const captainModel = require('../models/captain.model');
 
 
 /**
@@ -14,7 +15,6 @@ module.exports.authUser = async (req, res, next) => {
         // Extract token from cookies or Authorization header
         // Authorization header format: "Bearer <token>"
         const token = req.cookies.token || req.headers.authorization.split(' ')[1];
-
 
         // Return error if no token found
         if (!token) {
@@ -61,7 +61,7 @@ module.exports.authCaptain = async (req, res, next) => {
     }
     try{
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const captain = await captain.findById(decoded._id);
+        const captain = await captainModel.findById(decoded._id); // Corrected model name to match the import
         if(!captain){
             return res.status(401).json({message: 'Captain not found'});
         }
@@ -73,4 +73,3 @@ module.exports.authCaptain = async (req, res, next) => {
     }
 
 }
-       

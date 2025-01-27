@@ -41,20 +41,12 @@ router.post('/register',
  * POST /user/login 
  * Authenticate user credentials and login
  */
-router.post('/login',
-    [
-        // Validate email format
-        body('email')
-            .isEmail()
-            .withMessage('Invalid Email'),
-        
-        // Ensure password is provided    
-        body('password')
-            .notEmpty()
-            .withMessage('Password is required')
-    ],
+router.post('/login', [
+    body('email').isEmail().withMessage('Invalid Email'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+],
     userController.loginUser
-);
+)
 
 /**
  * GET /user/profile
