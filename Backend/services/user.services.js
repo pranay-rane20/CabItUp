@@ -34,12 +34,8 @@ module.exports.registerUser = async (email, firstname, lastname, password) => {
             password: hashedPassword,
         });
 
-        // Convert mongoose document to plain object
-        // Remove sensitive password field before returning
-        const userResponse = user.toObject();
-        delete userResponse.password;
-
-        return userResponse;
+        // Return the Mongoose document itself
+        return user;
     } catch (error) {
         // Log error for debugging and rethrow with original message
         console.error('Error during user registration:', error.message);

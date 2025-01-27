@@ -1,5 +1,8 @@
 const userModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const BlackListToken = require('../models/blackListToken.model');
+
 
 /**
  * Authentication middleware to protect routes
@@ -10,10 +13,16 @@ module.exports.auth = async (req, res, next) => {
     try {
         // Extract token from cookies or Authorization header
         // Authorization header format: "Bearer <token>"
-        const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
+        const token = req.cookies.token || req.headers.authorization.split(' ')[1];
+
 
         // Return error if no token found
         if (!token) {
+            return res.status(401).json({ message: 'Unauthorized user' });
+        }
+
+        const isBlackListed = await BlackListToken.findOne({ token: token });
+        if (isBlackListed) {
             return res.status(401).json({ message: 'Unauthorized user' });
         }
 
@@ -32,7 +41,7 @@ module.exports.auth = async (req, res, next) => {
         return next();
 
     } catch (error) {
-        // Return error for invalid/expired tokens
+        console.error('Token verification error:', error.message); // Log the error message
         return res.status(401).json({ message: 'Invalid token' });
     }
 }

@@ -240,3 +240,30 @@ The endpoint expects a JSON payload with the following fields:
 - Passwords are hashed before storing them in the database.
 - For validation, the endpoints leverage `express-validator` middleware.
 - JWT tokens are used for authenticating users in protected routes.
+
+
+
+
+## `/user/profile` Endpoint
+
+### Overview
+
+The `/user/profile` endpoint allows authenticated users to retrieve and update their profile information. This endpoint requires a valid JSON Web Token (JWT) for authentication.
+
+---
+
+### Endpoint Details
+
+#### URL
+
+- **GET /user/profile**: Retrieve the user's profile information.
+- **PUT /user/profile**: Update the user's profile information.
+
+#### Request Headers
+
+- **Content-Type**: `application/json`
+- **Authorization**: `Bearer <token>`
+
+#### GET Request
+
+The GET request does not require a body. It retrieves the current user's profile information.

@@ -83,8 +83,7 @@ module.exports.loginUser = async (req, res, next) => {
 };
 
 //Get user profile
-
-module.exports.getProfile = async (req, res, next) => {
+module.exports.getUserProfile = async (req, res, next) => {
     res.status(200).json({ 
         message: 'Profile fetched successfully', 
         user: req.user 
